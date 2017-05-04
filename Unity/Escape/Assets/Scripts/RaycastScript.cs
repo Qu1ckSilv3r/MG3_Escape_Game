@@ -18,7 +18,6 @@ public class RaycastScript : MonoBehaviour {
         Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.red);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100))
-            wasHit = hit.collider.name;
-           
+            wasHit = hit.collider.name;  
     }
 }

@@ -7,13 +7,17 @@ public class FormsPress : MonoBehaviour
 {
 
     private string wasHit;
-    private bool isPressed = false;
     private GameObject[] gameObjectsToReset;
+    private FormsPassword passwordCheck;
+   
 
     // Use this for initialization
     void Start () {
         //wasHit = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<RaycastScript>().wasHit;
+        if(gameObject.name == "reset")
         gameObjectsToReset = GameObject.FindGameObjectsWithTag("formButton");
+
+        passwordCheck = GameObject.FindGameObjectWithTag("formsPassword").GetComponent<FormsPassword>();
     }
 
     // Update is called once per frame
@@ -33,15 +37,9 @@ public class FormsPress : MonoBehaviour
                 }
             else{
                    if (Input.GetButtonUp("Interact")) {
-                if (isPressed)
-                {
-                        transform.localPosition = new Vector3(-0.9f, 0.3f, transform.localPosition.z);
-                    }
-                else {
                         transform.localPosition = new Vector3(-0.68f, 0.17f, transform.localPosition.z);
+                        passwordCheck.fillKeyArray(gameObject);
                     }
-                isPressed = !isPressed; 
-            }
             }
            
         }
@@ -49,7 +47,7 @@ public class FormsPress : MonoBehaviour
 
     }
      
-    void resetAll()
+    public void resetAll()
     {
         foreach (GameObject obj in gameObjectsToReset){
                 obj.transform.localPosition = new Vector3(-0.9f, 0.3f, obj.transform.localPosition.z);
@@ -59,7 +57,7 @@ public class FormsPress : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Debug.Log("raycastHit: " + raycastHit);
+        
     }
 
 }

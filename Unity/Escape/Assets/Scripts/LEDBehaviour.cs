@@ -9,8 +9,9 @@ public class LEDBehaviour : MonoBehaviour {
     private Material ledColor;
     private int timeElapsed = 0;
     public int flashingInterval;
-	// Use this for initialization
-	void Start () {
+    public bool flashingEnabled = true;
+    // Use this for initialization
+    void Start () {
         ledLight = gameObject.GetComponent<Light>();
         ledColor = GetComponent<MeshRenderer>().material;
     }
@@ -22,12 +23,21 @@ public class LEDBehaviour : MonoBehaviour {
 
     void FixedUpdate()
     {
-        timeElapsed++;
+        if (flashingEnabled)
+        {
+ timeElapsed++;
         if(timeElapsed == flashingInterval)
         {
             toggleFlashing();
             timeElapsed = 0;
         }
+        }
+        else
+        {
+            ledLight.color = Color.black;
+            ledColor.color = new Color(1f, 0.6f, 0.6f);
+        }
+       
        
     }
 
