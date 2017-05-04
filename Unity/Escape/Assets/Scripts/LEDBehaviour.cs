@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LEDBehaviour : MonoBehaviour {
 
-    public GameObject led;
     private bool flashing = false;
     private Light ledLight;
     private Material ledColor;
@@ -12,7 +11,7 @@ public class LEDBehaviour : MonoBehaviour {
     public int flashingInterval;
 	// Use this for initialization
 	void Start () {
-        ledLight = led.GetComponent<Light>();
+        ledLight = gameObject.GetComponent<Light>();
         ledColor = GetComponent<MeshRenderer>().material;
     }
 	
@@ -35,6 +34,6 @@ public class LEDBehaviour : MonoBehaviour {
     public void toggleFlashing() {
         flashing = !flashing;
         ledLight.color = flashing ? Color.red : Color.black;
-        ledColor.color = flashing ? Color.red : new Color(225, 221, 221);
+        ledColor.color = flashing ? Color.red : new Color(1f, 0.6f, 0.6f);
     }
 }
