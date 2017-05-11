@@ -28,12 +28,16 @@ public class AlarmScript : MonoBehaviour {
                 {
                     fail.enabled = true;
                     alarmOffice.Play();
+                    Cursor.visible = true;
+                    Time.timeScale = 0;
                 }
                 else
                 {
                     alarm.Play();
                     parentMaterial.color = Color.red;
                     success.enabled = true;
+                    Cursor.visible = true;
+                    Time.timeScale = 0;
                 }
             }
         }
