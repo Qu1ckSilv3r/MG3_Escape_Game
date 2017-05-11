@@ -13,9 +13,7 @@ public class RaycastScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        float rayLength = 500f;
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        Debug.DrawRay(ray.origin, ray.direction * rayLength, Color.red);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100))
             wasHit = hit.collider.name;  

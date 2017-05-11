@@ -8,11 +8,11 @@ public class FormsPassword : MonoBehaviour {
 
     private GameObject[] keys = new GameObject[4];
     private int index = 0;
-    private FormsPress script;
+    private FormsResetButton script;
     private Canvas finish;
     // Use this for initialization
     void Start () {
-        script = GameObject.FindGameObjectWithTag("resetButton").GetComponent<FormsPress>();
+        script = GameObject.FindGameObjectWithTag("resetButton").GetComponent<FormsResetButton>();
         finish = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
     }
 	
@@ -37,7 +37,8 @@ public class FormsPassword : MonoBehaviour {
             {
                 Debug.Log("false pass");
                 script.resetAll();
-                index = 0;
+                //resetArray();
+                return;
             }
             else if(i == password.Length - 1)
             {
@@ -47,5 +48,11 @@ public class FormsPassword : MonoBehaviour {
             }
                 
         }
+    }
+
+    public void resetArray()
+    {
+            index = 0;
+            keys = new GameObject[4];  
     }
 }

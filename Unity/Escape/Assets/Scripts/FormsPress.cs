@@ -6,17 +6,15 @@ using UnityEngine.EventSystems;
 public class FormsPress : MonoBehaviour
 {
 
-    private string wasHit;
-    private GameObject[] gameObjectsToReset;
+    public bool pressed;
+    private Material childMaterial;
     private FormsPassword passwordCheck;
    
 
     // Use this for initialization
     void Start () {
-        //wasHit = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<RaycastScript>().wasHit;
-        if(gameObject.name == "reset")
-        gameObjectsToReset = GameObject.FindGameObjectsWithTag("formButton");
-
+        childMaterial = transform.GetChild(0).GetComponent<MeshRenderer>().material;
+        pressed = false;
         passwordCheck = GameObject.FindGameObjectWithTag("formsPassword").GetComponent<FormsPassword>();
     }
 
@@ -25,35 +23,16 @@ public class FormsPress : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("MainCamera").GetComponent<RaycastScript>().wasHit == gameObject.name)
         {
-            if (gameObject.name == "reset") {
-                if (Input.GetButtonDown("Interact"))
-                {
-                    transform.localPosition = new Vector3(transform.localPosition.x, 1, transform.localPosition.z);
-                }
-                if (Input.GetButtonUp("Interact")){
-                    transform.localPosition = new Vector3(transform.localPosition.x, 1.01f, transform.localPosition.z);
-                    resetAll();
-                }
-                }
-            else{
-                   if (Input.GetButtonUp("Interact")) {
+                   if (Input.GetButtonUp("Interact") && !pressed) {
                         transform.localPosition = new Vector3(-0.68f, 0.17f, transform.localPosition.z);
+                        childMaterial.color = Color.green;
+                        pressed = true;
                         passwordCheck.fillKeyArray(gameObject);
                     }
-            }
-           
         }
             
 
     }
-     
-    public void resetAll()
-    {
-        foreach (GameObject obj in gameObjectsToReset){
-                obj.transform.localPosition = new Vector3(-0.9f, 0.3f, obj.transform.localPosition.z);
-        }
-    }
-  
 
     void FixedUpdate()
     {
