@@ -1,15 +1,22 @@
 fileFormatVersion: 2
-guid: f019d9bc33166e743941f7d44fe71c83
-timeCreated: 1494505417
+guid: ac5315c5c19e8d94fa8cb122374ff4bb
+timeCreated: 1494513513
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Cube
+    100004: Einlegboden
     400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Cube
+    400002: Cube
+    400004: Einlegboden
+    2300000: Cube
+    2300002: Einlegboden
+    3300000: Cube
+    3300002: Einlegboden
+    4300000: Einlegboden
+    4300002: Cube
     7400000: Default Take
     9500000: //RootNode
   materials:
