@@ -7,6 +7,7 @@ public class AlarmScript : MonoBehaviour {
     private AudioSource alarmOffice;
     private Material parentMaterial;
     private Canvas fail;
+    private Canvas success;
 
     // Use this for initialization
     void Start () {
@@ -14,6 +15,7 @@ public class AlarmScript : MonoBehaviour {
         alarmOffice = GameObject.Find("AlarmSourceOffice").GetComponent<AudioSource>();
         parentMaterial = transform.parent.GetComponent<MeshRenderer>().material;
         fail = GameObject.FindGameObjectWithTag("failed").GetComponent<Canvas>();
+        success = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
     }
 	
 	// Update is called once per frame
@@ -31,6 +33,7 @@ public class AlarmScript : MonoBehaviour {
                 {
                     alarm.Play();
                     parentMaterial.color = Color.red;
+                    success.enabled = true;
                 }
             }
         }
