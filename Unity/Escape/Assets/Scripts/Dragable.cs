@@ -1,103 +1,96 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
+using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class Dragable : MonoBehaviour
+namespace UnityStandardAssets.Utility
 {
-
-    public int normalCollisionCount = 1;
-    public float moveLimit = .5f;
-    public float collisionMoveFactor = .01f;
-    public float addHeightWhenClicked = 0.0f;
-    public bool freezeRotationOnDrag = true;
-    public Camera cam;
-    private Rigidbody myRigidbody;
-    private Transform myTransform;
-    private bool canMove = false;
-    private float yPos;
-    private bool gravitySetting;
-    private bool freezeRotationSetting;
-    private float sqrMoveLimit;
-    private int collisionCount = 0;
-    private Transform camTransform;
-
-    void Start()
+    public class Dragable : MonoBehaviour
     {
-        myRigidbody = GetComponent<Rigidbody>();
-        myTransform = transform;
-        if (!cam)
+        const float k_Spring = 50.0f;
+        const float k_Damper = 5.0f;
+        const float k_Drag = 10.0f;
+        const float k_AngularDrag = 5.0f;
+        const float k_Distance = 0.2f;
+        const bool k_AttachToCenterOfMass = false;
+
+        private SpringJoint m_SpringJoint;
+
+
+        private void Update()
         {
-            cam = Camera.main;
-        }
-        if (!cam)
-        {
-            Debug.LogError("Can't find camera tagged MainCamera");
-            return;
-        }
-        camTransform = cam.transform;
-        sqrMoveLimit = moveLimit * moveLimit;   // Since we're using sqrMagnitude, which is faster than magnitude
-    }
+            // Make sure the user pressed the mouse down
+            if (!Input.GetMouseButtonDown(0))
+            {
+                return;
+            }
 
-    void OnMouseDown()
-    {
-        canMove = true;
-        myTransform.Translate(Vector3.up * addHeightWhenClicked);
-        gravitySetting = myRigidbody.useGravity;
-        freezeRotationSetting = myRigidbody.freezeRotation;
-        myRigidbody.useGravity = false;
-        myRigidbody.freezeRotation = freezeRotationOnDrag;
-        yPos = myTransform.position.y;
-    }
+            var mainCamera = FindCamera();
 
-    void OnMouseUp()
-    {
-        canMove = false;
-        myRigidbody.useGravity = gravitySetting;
-        myRigidbody.freezeRotation = freezeRotationSetting;
-        if (!myRigidbody.useGravity)
-        {
-            Vector3 pos = myTransform.position;
-            pos.y = yPos - addHeightWhenClicked;
-            myTransform.position = pos;
-        }
-    }
+            // We need to actually hit an object
+            RaycastHit hit = new RaycastHit();
+            if (
+                !Physics.Raycast(mainCamera.ScreenPointToRay(Input.mousePosition).origin,
+                                 mainCamera.ScreenPointToRay(Input.mousePosition).direction, out hit, 100,
+                                 Physics.DefaultRaycastLayers))
+            {
+                return;
+            }
+            // We need to hit a rigidbody that is not kinematic
+            if (!hit.rigidbody || hit.rigidbody.isKinematic)
+            {
+                return;
+            }
 
-    void OnCollisionEnter()
-    {
-        collisionCount++;
-    }
+            if (!m_SpringJoint)
+            {
+                var go = new GameObject("Rigidbody dragger");
+                Rigidbody body = go.AddComponent<Rigidbody>();
+                m_SpringJoint = go.AddComponent<SpringJoint>();
+                body.isKinematic = true;
+            }
 
-    void OnCollisionExit()
-    {
-        collisionCount--;
-    }
+            m_SpringJoint.transform.position = hit.point;
+            m_SpringJoint.anchor = Vector3.zero;
 
-    void FixedUpdate()
-    {
-        if (!canMove)
-        {
-            return;
+            m_SpringJoint.spring = k_Spring;
+            m_SpringJoint.damper = k_Damper;
+            m_SpringJoint.maxDistance = k_Distance;
+            m_SpringJoint.connectedBody = hit.rigidbody;
+
+            StartCoroutine("DragObject", hit.distance);
         }
 
-        myRigidbody.velocity = Vector3.zero;
-        myRigidbody.angularVelocity = Vector3.zero;
 
-        Vector3 pos = myTransform.position;
-        pos.y = yPos;
-        myTransform.position = pos;
-
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 move = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, camTransform.position.y - myTransform.position.y)) - myTransform.position;
-        move.y = 0.0f;
-        if (collisionCount > normalCollisionCount)
+        private IEnumerator DragObject(float distance)
         {
-            move = move.normalized * collisionMoveFactor;
-        }
-        else if (move.sqrMagnitude > sqrMoveLimit)
-        {
-            move = move.normalized * moveLimit;
+            var oldDrag = m_SpringJoint.connectedBody.drag;
+            var oldAngularDrag = m_SpringJoint.connectedBody.angularDrag;
+            m_SpringJoint.connectedBody.drag = k_Drag;
+            m_SpringJoint.connectedBody.angularDrag = k_AngularDrag;
+            var mainCamera = FindCamera();
+            while (Input.GetMouseButton(0))
+            {
+                var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                m_SpringJoint.transform.position = ray.GetPoint(distance);
+                yield return null;
+            }
+            if (m_SpringJoint.connectedBody)
+            {
+                m_SpringJoint.connectedBody.drag = oldDrag;
+                m_SpringJoint.connectedBody.angularDrag = oldAngularDrag;
+                m_SpringJoint.connectedBody = null;
+            }
         }
 
-        myRigidbody.MovePosition(myRigidbody.position + move);
+
+        private Camera FindCamera()
+        {
+            if (GetComponent<Camera>())
+            {
+                return GetComponent<Camera>();
+            }
+
+            return Camera.main;
+        }
     }
 }
