@@ -8,21 +8,29 @@ public class FormsPassword : MonoBehaviour {
 
     private GameObject[] keys = new GameObject[4];
     private int index = 0;
-    private FormsPress script;
+    private FormsResetButton script;
     private Canvas finish;
-    // Use this for initialization
+    private SpriteRenderer lockscreenRenderer;
+    private GameObject lockscreen;
+    public Sprite defaultLockscreen;
+    public Sprite wrongPassword;
+    
     void Start () {
-        script = GameObject.FindGameObjectWithTag("resetButton").GetComponent<FormsPress>();
+        script = GameObject.FindGameObjectWithTag("resetButton").GetComponent<FormsResetButton>();
         finish = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
+        lockscreen = GameObject.Find("lockscreen");
+        lockscreenRenderer = lockscreen.GetComponent<SpriteRenderer>();
     }
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
 
     public void fillKeyArray(GameObject obj)
     {
+        if (index == 0) {
+            lockscreenRenderer.sprite = defaultLockscreen;
+        }
         keys[index] = obj;
         index++;
         if(index == password.Length)
@@ -35,17 +43,23 @@ public class FormsPassword : MonoBehaviour {
         {
             if (password[i].name != keys[i].name)
             {
-                Debug.Log("false pass");
                 script.resetAll();
-                index = 0;
+                lockscreenRenderer.sprite = wrongPassword;
+                return;
             }
             else if(i == password.Length - 1)
             {
-                Debug.Log("CONGRATZ");
                 index = 0;
-                finish.enabled = true;
+                lockscreen.SetActive(false);
             }
                 
         }
+    }
+
+    public void resetArray()
+    {
+            index = 0;
+            keys = new GameObject[4];
+            lockscreenRenderer.sprite = defaultLockscreen;
     }
 }
