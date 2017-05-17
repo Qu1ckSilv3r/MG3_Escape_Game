@@ -17,7 +17,7 @@ public class GuardsMovement : MonoBehaviour {
 	void Start () {
         move = true;
         timesUp = GameObject.FindGameObjectWithTag("timesUp").GetComponent<Canvas>();
-        voices.PlayDelayed(20);
+        voices.PlayDelayed(30);
         steps.PlayDelayed(2);
         timePassed = 0;
     }
