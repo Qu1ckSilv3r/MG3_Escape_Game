@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class AlarmScript : MonoBehaviour {
     private AudioSource alarm;
     private AudioSource alarmOffice;
     private Material parentMaterial;
     private Canvas fail;
     private Canvas success;
+    private MonoBehaviour mouseLock;
+    private GuardsMovement guards;
 
     // Use this for initialization
     void Start () {
@@ -16,6 +20,8 @@ public class AlarmScript : MonoBehaviour {
         parentMaterial = transform.parent.GetComponent<MeshRenderer>().material;
         fail = GameObject.FindGameObjectWithTag("failed").GetComponent<Canvas>();
         success = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
+        guards = GameObject.Find("sourceGroup").GetComponent<GuardsMovement>();
+        //mouseLock = GameObject.FindGameObjectWithTag("Player")<FirstPersonController>();
     }
 	
 	// Update is called once per frame
@@ -24,11 +30,13 @@ public class AlarmScript : MonoBehaviour {
         {
             if (Input.GetButtonUp("Interact"))
             {
-                if(gameObject.name == "alarm_office")
+                guards.setMove(false);
+                if (gameObject.name == "alarm_office")
                 {
                     fail.enabled = true;
                     alarmOffice.Play();
                     Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                     Time.timeScale = 0;
                 }
                 else
@@ -37,6 +45,7 @@ public class AlarmScript : MonoBehaviour {
                     parentMaterial.color = Color.red;
                     success.enabled = true;
                     Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                     Time.timeScale = 0;
                 }
             }
