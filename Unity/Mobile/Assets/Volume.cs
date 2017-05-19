@@ -25,7 +25,7 @@ public class Volume : MonoBehaviour {
         voices.volume = volumeSlider.value;
         keys.volume = volumeSlider.value;
         alarmRight.volume = volumeSlider.value;
-        alarmWrong.volume = volumeSlider.value;
+        alarmWrong.volume = volumeSlider.value - 0.5f;
     }
 
     public void stopAll()

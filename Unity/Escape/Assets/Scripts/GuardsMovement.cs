@@ -20,6 +20,7 @@ public class GuardsMovement : MonoBehaviour {
         voices.PlayDelayed(30);
         steps.PlayDelayed(2);
         timePassed = 0;
+        Time.timeScale = 1;
     }
 	
 	// Update is called once per frame

@@ -21,6 +21,7 @@ public class AlarmScript : MonoBehaviour {
         fail = GameObject.FindGameObjectWithTag("failed").GetComponent<Canvas>();
         success = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
         guards = GameObject.Find("sourceGroup").GetComponent<GuardsMovement>();
+        Time.timeScale = 1;
         //mouseLock = GameObject.FindGameObjectWithTag("Player")<FirstPersonController>();
     }
 	
