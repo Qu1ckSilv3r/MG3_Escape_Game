@@ -12,6 +12,7 @@ public class AlarmScript : MonoBehaviour {
     private Canvas success;
     private MonoBehaviour mouseLock;
     private GuardsMovement guards;
+    private GameObject obstLed;
 
     // Use this for initialization
     void Start () {
@@ -21,6 +22,8 @@ public class AlarmScript : MonoBehaviour {
         fail = GameObject.FindGameObjectWithTag("failed").GetComponent<Canvas>();
         success = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
         guards = GameObject.Find("sourceGroup").GetComponent<GuardsMovement>();
+        // ist anfangs inaktiv, daher die umstaendliche suche
+        obstLed =  GameObject.Find("Box_mit_Einlegeboden").transform.Find("LED").gameObject;
         Time.timeScale = 1;
         //mouseLock = GameObject.FindGameObjectWithTag("Player")<FirstPersonController>();
     }
@@ -44,10 +47,13 @@ public class AlarmScript : MonoBehaviour {
                 {
                     alarm.Play();
                     parentMaterial.color = Color.red;
+                    obstLed.SetActive(true);
+                    /*
                     success.enabled = true;
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.None;
                     Time.timeScale = 0;
+                    */
                 }
             }
         }

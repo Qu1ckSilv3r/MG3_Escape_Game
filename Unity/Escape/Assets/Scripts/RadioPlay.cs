@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RadioPlay : MonoBehaviour {
     private AudioSource audioSource;
+    public GameObject radioLed;
 
     // Use this for initialization
     void Start () {
@@ -19,6 +20,7 @@ public class RadioPlay : MonoBehaviour {
             {
                 transform.localPosition = new Vector3(transform.localPosition.x, 0.8f, transform.localPosition.z);
                 audioSource.Play();
+                radioLed.SetActive(false);
             }
             if (Input.GetButtonUp("Interact"))
             {
