@@ -10,15 +10,16 @@ public class GuardsMovement : MonoBehaviour {
     public AudioSource voices;
     public AudioSource steps;
     public AudioSource doorUnlock;
-    private int delay = 120;
+    private int delay = 350;
+    private int voiceDelay = 350;
     private int timePassed = 0;
 
 	// Use this for initialization
 	void Start () {
         move = true;
         timesUp = GameObject.FindGameObjectWithTag("timesUp").GetComponent<Canvas>();
-        voices.PlayDelayed(30);
-        steps.PlayDelayed(2);
+        voices.PlayDelayed(voiceDelay);
+        //steps.PlayDelayed(2);
         timePassed = 0;
         Time.timeScale = 1;
     }
@@ -34,7 +35,7 @@ public class GuardsMovement : MonoBehaviour {
         if (!moving)
         {
             voices.Stop();
-            steps.Stop();
+           // steps.Stop();
         }
     }
 
@@ -48,7 +49,7 @@ public class GuardsMovement : MonoBehaviour {
             }
             else{
                 voices.Stop();
-                steps.Stop();
+               // steps.Stop();
                 doorUnlock.Pause();
                 doorUnlock.Play();
                 if (!doorUnlock.isPlaying)
