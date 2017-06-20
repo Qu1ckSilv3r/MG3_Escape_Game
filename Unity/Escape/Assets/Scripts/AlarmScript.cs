@@ -13,6 +13,8 @@ public class AlarmScript : MonoBehaviour {
     private MonoBehaviour mouseLock;
     private GuardsMovement guards;
     private GameObject obstLed;
+    private GameObject banana;
+    private GameObject guardsObject;
 
     // Use this for initialization
     void Start () {
@@ -22,6 +24,7 @@ public class AlarmScript : MonoBehaviour {
         fail = GameObject.FindGameObjectWithTag("failed").GetComponent<Canvas>();
         success = GameObject.FindGameObjectWithTag("Finish").GetComponent<Canvas>();
         guards = GameObject.Find("sourceGroup").GetComponent<GuardsMovement>();
+        guardsObject = GameObject.Find("Guards");
         // ist anfangs inaktiv, daher die umstaendliche suche
         obstLed =  GameObject.Find("Box_mit_Einlegeboden").transform.Find("LED").gameObject;
         Time.timeScale = 1;
@@ -48,6 +51,10 @@ public class AlarmScript : MonoBehaviour {
                     alarm.Play();
                     parentMaterial.color = Color.red;
                     obstLed.SetActive(true);
+                    // Um die Wachen braucht man sich nun nicht mehr sorgen!
+                    guardsObject.SetActive(false);
+                    // Funktion aktivieren, dass man in der Banane Daten finden kann (lol)
+                    GameObject.Find("banane (2)").GetComponent<BananaData>().bananaActivated = true;
                     /*
                     success.enabled = true;
                     Cursor.visible = true;

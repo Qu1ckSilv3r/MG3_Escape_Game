@@ -10,7 +10,7 @@ public class GuardsMovement : MonoBehaviour {
     public AudioSource voices;
     public AudioSource steps;
     public AudioSource doorUnlock;
-    private int delay = 60;
+    private int delay = 120;
     private int timePassed = 0;
 
 	// Use this for initialization
