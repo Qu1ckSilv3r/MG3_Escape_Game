@@ -11,6 +11,13 @@ public class Volume : MonoBehaviour {
     public AudioSource keys;
     public AudioSource alarmRight;
     public AudioSource alarmWrong;
+    public AudioSource einleitung;
+    public AudioSource radio;
+    public AudioSource radioSchluss;
+    public AudioSource wachen;
+    public AudioSource wachenEndeAlarm;
+    public AudioSource wachenEndeEntdeckung;
+    public AudioSource wachenNurStimmen;
 
     private AudioHandler script;
 
@@ -55,4 +62,40 @@ public class Volume : MonoBehaviour {
         footsteps.PlayDelayed(2);
         script.setMove(true);
     }
+
+    public void toggleEinleitung()
+    {
+        stopAll();
+        einleitung.Play();
+    }
+
+    public void toggleRadio()
+    {
+        stopAll();
+        radio.Play();
+    }
+
+    public void toggleRadioSchluss()
+    {
+        stopAll();
+        radioSchluss.Play();
+    }
+
+    public void toggleWachen()
+    {
+        stopAll();
+        wachen.Play();
+    }
+    public void toggleWachenEndeAlarm()
+    {
+        stopAll();
+        wachenEndeAlarm.Play();
+    }
+
+    public void toggleWachenEndeEntdeckung()
+    {
+        stopAll();
+        wachenEndeEntdeckung.Play();
+    }
+    
 }
